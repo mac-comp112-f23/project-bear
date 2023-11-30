@@ -1,0 +1,118 @@
+---
+title: "E.Paul_StartingVizualization"
+author: "Evelyn Paul"
+date: "2023-11-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dplyr)
+library(knitr)
+library(stringr)
+library(ggplot2)
+library(wesanderson)
+
+```
+
+```{r}
+elf <- read.csv("https://raw.githubusercontent.com/mac-comp112-f23/project-bear/main/elfman_final.csv")
+pem <- read.csv("https://raw.githubusercontent.com/mac-comp112-f23/project-bear/main/pemb_final.csv")
+zim <- read.csv("https://raw.githubusercontent.com/mac-comp112-f23/project-bear/main/zimmer_final.csv")
+```
+
+
+```{r}
+
+zimmer_final <- zim %>% arrange(desc(averageRating))
+pemb_final <- pem %>% arrange(desc(averageRating))
+elfman_final <- elf %>% arrange(desc(averageRating))
+
+```
+
+```{r}
+
+elfman_years <- elfman_final %>%
+  summarise(
+    MinYear = min(startYear),
+    MaxYear = max(startYear)
+  )
+
+# Get max and min year for Pemberton
+pemb_years <- pemb_final %>%
+  summarise(
+    MinYear = min(startYear),
+    MaxYear = max(startYear)
+  )
+
+# Get max and min year for Zimmer
+zimmer_years <- zimmer_final %>%
+  summarise(
+    MinYear = min(startYear),
+    MaxYear = max(startYear)
+  )
+
+# Print the results
+print(elfman_years)
+print(pemb_years)
+print(zimmer_years)
+
+```
+
+```{r}
+
+elfman_avg_score_per_year <- elfman_final %>%
+  group_by(startYear) %>%
+  summarise(
+    AvgScore = mean(averageRating, na.rm = TRUE)
+  )
+
+# Calculate the average score per year for Pemberton
+pemb_avg_score_per_year <- pemb_final %>%
+  group_by(startYear) %>%
+  summarise(
+    AvgScore = mean(averageRating, na.rm = TRUE)
+  )
+
+# Calculate the average score per year for Zimmer
+zimmer_avg_score_per_year <- zimmer_final %>%
+  group_by(startYear) %>%
+  summarise(
+    AvgScore = mean(averageRating, na.rm = TRUE)
+  )
+
+# Print the results
+print(elfman_avg_score_per_year)
+print(pemb_avg_score_per_year)
+print(zimmer_avg_score_per_year)
+
+```
+
+```{r}
+# Plot for Danny Elfman
+ggplot(elfman_avg_score_per_year, aes(x = startYear, y = AvgScore)) +
+  geom_line(color = wes_palette("BottleRocket1")[1]) +
+  theme_minimal() +
+  labs(title = "Average Score Per Year - Danny Elfman",
+       x = "Year",
+       y = "Average Score")
+
+# Plot for Daniel Pemberton
+ggplot(pemb_avg_score_per_year, aes(x = startYear, y = AvgScore)) +
+  geom_line(color = wes_palette("BottleRocket1")[2]) +
+  theme_minimal() +
+  labs(title = "Average Score Per Year - Daniel Pemberton",
+       x = "Year",
+       y = "Average Score")
+
+# Plot for Hans Zimmer
+ggplot(zimmer_avg_score_per_year, aes(x = startYear, y = AvgScore)) +
+  geom_line(color = wes_palette("BottleRocket1")[3]) +
+  theme_minimal() +
+  labs(title = "Average Score Per Year - Hans Zimmer",
+       x = "Year",
+       y = "Average Score")
+
+```
+
