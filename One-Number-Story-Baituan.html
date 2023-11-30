@@ -1,0 +1,52 @@
+---
+title: "one number story"
+author: "BaituanZhou"
+date: "2023-11-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(tidyverse)
+```
+
+```{r}
+zimmer_final<-read.csv("C:/Users/周公/Desktop/zimmer_final.csv")
+pemb_final<-read.csv("C:/Users/周公/Desktop/pemb_final.csv")
+elfman_final<-read.csv("C:/Users/周公/Desktop/elfman_final.csv")
+```
+
+```{r}
+zimmer_final %>% 
+  filter(titleType=="movie") %>% 
+  group_by(titleType) %>% 
+  summarize(sum(averageRating)/n())
+  
+```
+
+```{r}
+zimmer_final %>% 
+  filter(role=="composer") %>% 
+  arrange(desc(numVotes)) %>%
+  head(5)
+
+elfman_final %>%
+  distinct(tconst,.keep_all = TRUE) %>% 
+  filter(role=="composer") %>% 
+  arrange(desc(numVotes)) %>% 
+  head(5)
+
+pemb_final %>% 
+  filter(role=="composer") %>% 
+  arrange(desc(numVotes)) %>% 
+  head(5)
+```
+Here are three data sheets about famous film music producers. They are Danny Elfman, Daniel Pemberton and Hans Zimmer respectively. The data includes the name of the corresponding work, creation time, their contribution to the work, ratings, number of voters, etc. All three data were compiled by Evelyn Paul.
+By selecting the top five works voted by each composer, in other words, we can get the types of movies that people like. It is not difficult to find that the votes of Elfman and Pemberton are much higher than that of Zimmer. But in contrast, the ratings of Zimmer's five works are much higher than others. By observing their most popular soundtrack works, the most popular film and television works are basically dominated by science fiction and superhero genres.
+Elfman and Pemberton's soundtracks, Spider-Man series and Marvel's Avengers series are undoubtedly world-famous. Their excellent soundtrack undoubtedly complements the film’s stunning visuals and battle scenes. These aspirational heroic stories are undoubtedly something everyone aspires to. Others, such as Charlie and the Chocolate Factory, are also works that are very attractive to both adults and children. Their works are basically aimed at all groups, so they have a wider audience.
+Zimmer's dubbing works have a greater barrier to viewing. The complex logic and settings undoubtedly dissuaded many viewers. I believe that countless people can still recall the classic score of Interstellar. The success of this work is also inseparable from Zimmer's excellent music creation. Although they are both superhero movies, the Batman series is different from the cool and gorgeous equipment and battles in the Marvel world, and its background is often darker.
+These three are all undisputed masters of film creation, and these data can reveal the specific areas in which their different styles excel, and the types of films that people prefer.
