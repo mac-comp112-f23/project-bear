@@ -1,0 +1,26 @@
+---
+title: "Untitled"
+author: "BaituanZhou"
+date: "2023-12-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(tidyverse)
+```
+
+```{r}
+rating = read.csv("ratings.csv")
+composer = read.csv("composer_data.csv")
+title = read_tsv("C:/Users/周公/Desktop/data.tsv")
+```
+
+```{r}
+composer %>% 
+  left_join(title, by=c("tname" = "primaryTitle")) %>% 
+  left_join(rating, by = c("tconst"="tconst"))
+```
+

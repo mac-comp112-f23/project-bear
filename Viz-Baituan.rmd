@@ -1,0 +1,91 @@
+---
+title: "Viz-Baituan"
+author: "BaituanZhou"
+date: "2023-11-30"
+output: html_document
+---
+
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(tidyr)
+elfman_final <- read.csv("https://raw.githubusercontent.com/mac-comp112-f23/project-bear/main/elfman_final.csv")
+pemb_final <- read.csv("https://raw.githubusercontent.com/mac-comp112-f23/project-bear/main/pemb_final.csv")
+zimmer_final <- read.csv("https://raw.githubusercontent.com/mac-comp112-f23/project-bear/main/zimmer_final.csv")
+
+```
+
+
+
+
+```{r}
+elfman_final<-separate(elfman_final,genres,c("genres1","genres2","genres3"),sep=",")
+elfman_final_1<-elfman_final %>% 
+  group_by(genres1) %>% 
+  summarize(mean(averageRating))
+elfman_final_2<-elfman_final %>% 
+  group_by(genres2) %>% 
+  summarize(mean(averageRating))
+elfman_final_3<-elfman_final %>% 
+  group_by(genres3) %>% 
+  summarize(mean(averageRating))
+elf_man_genre<-elfman_final_1 %>% 
+  full_join(elfman_final_2,by=c("genres1"="genres2"))
+elf_man_genre<-elf_man_genre %>% 
+  full_join(elfman_final_3,by=c("genres1"="genres3"))
+elf_man_genre$average_score<-rowMeans(elf_man_genre[,2:4],na.rm = TRUE)
+elf_man_genre %>% 
+  ggplot(aes(x=genres1,y=average_score))+
+  geom_histogram(stat = "identity", fill= "purple",color = "white")+
+  coord_flip()+
+  labs(y="Average score", x="Genre", title = "Genres of Elfman soundtrack works and corresponding ratings")
+```
+
+```{r}
+pemb_final<-separate(pemb_final,genres,c("genres1","genres2","genres3"),sep=",")
+pemb_final_1<-pemb_final %>% 
+  group_by(genres1) %>% 
+  summarize(mean(averageRating))
+pemb_final_2<-pemb_final %>% 
+  group_by(genres2) %>% 
+  summarize(mean(averageRating))
+pemb_final_3<-pemb_final %>% 
+  group_by(genres3) %>% 
+  summarize(mean(averageRating))
+pemb_genre<-pemb_final_1 %>% 
+  full_join(pemb_final_2,by=c("genres1"="genres2"))
+pemb_genre<-pemb_genre %>% 
+  full_join(pemb_final_3,by=c("genres1"="genres3"))
+pemb_genre$average_score<-rowMeans(pemb_genre[,2:4],na.rm = TRUE)
+pemb_genre %>% 
+  ggplot(aes(x=genres1,y=average_score))+
+  geom_histogram(stat = "identity", fill= "red",color = "white")+
+  coord_flip()+
+  labs(y="Average score", x="Genre", title = "Genres of Pemberton soundtrack works and corresponding ratings")
+```
+
+```{r}
+
+zimmer_final<-separate(zimmer_final,genres,c("genres1","genres2","genres3"),sep=",")
+zimmer_final_1<-zimmer_final %>% 
+  group_by(genres1) %>% 
+  summarize(mean(averageRating))
+zimmer_final_2<-zimmer_final %>% 
+  group_by(genres2) %>% 
+  summarize(mean(averageRating))
+zimmer_final_3<-zimmer_final %>% 
+  group_by(genres3) %>% 
+  summarize(mean(averageRating))
+zimmer_genre<-zimmer_final_1 %>% 
+  full_join(zimmer_final_2,by=c("genres1"="genres2"))
+zimmer_genre<-zimmer_genre %>% 
+  full_join(zimmer_final_3,by=c("genres1"="genres3"))
+zimmer_genre$average_score<-rowMeans(zimmer_genre[,2:4],na.rm = TRUE)
+zimmer_genre %>% 
+  ggplot(aes(x=genres1,y=average_score))+
+  geom_histogram(stat = "identity", fill= "blue",color = "white")+
+  coord_flip()+
+  labs(y="Average score", x="Genre", title = "Genres of Zimmer soundtrack works and corresponding ratings")
+```
+
